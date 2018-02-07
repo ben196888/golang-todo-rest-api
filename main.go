@@ -3,20 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 )
-
-// Todo item structure
-type Todo struct {
-	Name      string    `json:"name"`
-	Completed bool      `json:"completed"`
-	Due       time.Time `json:"due"`
-}
-
-// Todos type is list of todo
-type Todos []Todo
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
