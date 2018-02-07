@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,7 +9,10 @@ import (
 
 // Index to response health
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome!")
+	msg := jsonMsg{200, "Welcome!"}
+	if err := json.NewEncoder(w).Encode(msg); err != nil {
+		panic(err)
+	}
 }
 
 // TodoIndex to get all todos
