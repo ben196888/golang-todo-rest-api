@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -26,8 +27,27 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 // TodoShow to show todo by todo id
 func TodoShow(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	todoID := params["todoID"]
-	if err := json.NewEncoder(w).Encode(todoID); err != nil {
+	var todoID int
+	var err error
+	if todoID, err = strconv.Atoi(params["todoID"]); err != nil {
+		panic(err)
+	}
+	todo := RepoFindTodo(todoID)
+	// check not empty todo
+	if todo.ID > 0 {
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(todo); err != nil {
+			panic(err)
+		}
+		return
+	}
+
+	// return error when got empty todo
+	w.WriteHeader(http.StatusNotFound)
+	if err := json.NewEncoder(w).Encode(jsonMsg{
+		Code: http.StatusNotFound,
+		Msg:  "Not Found",
+	}); err != nil {
 		panic(err)
 	}
 }
