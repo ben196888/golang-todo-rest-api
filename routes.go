@@ -29,6 +29,12 @@ var routes = Routes{
 		TodoIndex,
 	},
 	Route{
+		"TodoCreate",
+		"POST",
+		"/todos",
+		TodoCreate,
+	},
+	Route{
 		"TodoShow",
 		"Get",
 		"/todos/{todoID}",
