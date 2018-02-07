@@ -17,10 +17,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 // TodoIndex to get all todos
 func TodoIndex(w http.ResponseWriter, r *http.Request) {
-	todos := Todos{
-		Todo{Name: "Write presentation"},
-		Todo{Name: "Host meetup"},
-	}
+	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(todos); err != nil {
 		panic(err)
 	}
