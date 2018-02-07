@@ -24,6 +24,7 @@ func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", Index)
 	router.HandleFunc("/todos", TodoIndex)
+	router.HandleFunc("/todos/{todoID}", TodoShow)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
@@ -39,6 +40,15 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 		Todo{Name: "Host meetup"},
 	}
 	if err := json.NewEncoder(w).Encode(todos); err != nil {
+		panic(err)
+	}
+}
+
+// TodoShow to show todo by todo id
+func TodoShow(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	todoID := params["todoID"]
+	if err := json.NewEncoder(w).Encode(todoID); err != nil {
 		panic(err)
 	}
 }
