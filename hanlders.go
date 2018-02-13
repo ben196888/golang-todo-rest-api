@@ -87,3 +87,29 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 }
+
+// TodoDelete to delete todo by id
+func TodoDelete(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	todoID, err := strconv.Atoi(params["todoID"])
+	if err != nil {
+		panic(err)
+	}
+	if err := RepoDestroyTodo(todoID); err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		if err := json.NewEncoder(w).Encode(jsonMsg{
+			Code: http.StatusNotFound,
+			Msg:  "Delete fail",
+		}); err != nil {
+			panic(err)
+		}
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(jsonMsg{
+		Code: http.StatusOK,
+		Msg:  "ok",
+	}); err != nil {
+		panic(err)
+	}
+}

@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 var currentID int
 var todos Todos
 
@@ -25,4 +27,15 @@ func RepoCreateTodo(t Todo) Todo {
 	t.ID = currentID
 	todos = append(todos, t)
 	return t
+}
+
+// RepoDestroyTodo remove a todo by id, return error if todo not existed
+func RepoDestroyTodo(id int) error {
+	for index, todo := range todos {
+		if todo.ID == id {
+			todos = append(todos[:index], todos[index+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("Could not find Todo w/ id of %d to delete", id)
 }
