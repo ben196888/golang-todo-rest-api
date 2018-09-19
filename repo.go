@@ -5,7 +5,6 @@ import (
 	"log"
 )
 
-var currentID int
 var todos Todos
 
 func init() {
@@ -34,8 +33,6 @@ func RepoFindTodo(id int) Todo {
 
 // RepoCreateTodo append a todo w/ auto-increment id
 func RepoCreateTodo(t Todo) Todo {
-	currentID++
-	t.ID = currentID
 	todos = append(todos, t)
 	curID, err := redisClient.Incr("todoCounter").Result()
 	if err != nil {
